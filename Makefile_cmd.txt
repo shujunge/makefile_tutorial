@@ -1,0 +1,60 @@
+1.g++的编译原理
+(1) yourfile.cpp -> yourfile.o
+(2) yourfile.o -> an executable file
+
+g++的命令:
+(1) -c 编译你的cpp文件　
+(2) -I<dir> 添加你需要的库的头文件路经
+(3) -L<dir> 添加你的lib文件路经
+
+
+Ｍakefile文件的使用:
+(1)换行缩进采用tab键
+(2) 添加对应的目标:all,clean,install,uninstall等等
+make all
+make clean
+make install
+make uninstall
+(3)使用含蓄表达式:
+
+eg:
+main: mian.o zf.o
+  g++ main.o zf.o  -o main
+等价于:
+main: main.o zf.o
+  g++ $^ -o $@
+
+
+eg:
+zf.o: zf.cpp zf.h
+  g++ -c zf.cpp
+等价于: 
+%.o: %.cpp $(deps)
+	$(cc) -c $< -o $@
+
+(4)条件指令:
+ifeq,ifneq,ifdef,ifndef,else,endif
+eg:
+ifeq($(cc),gcc)
+ifeq "$(cc)" 'gcc'
+
+
+(5)重新编译:
+当只修改某一个cpp文件时,不需要从头开始编译，可以使用命令:
+make -t
+当修改头文件时，需要对头文件也进行编译可以使用的命令为:
+make -o yourfile
+(6)使用变量:
+var:your command 
+$(var)==command
+
+eg:
+main: main.o zf.o
+  g++ &^ -o $@
+等价于:
+cc=g++
+obj= mian.0 zf.0
+main: $(obj)
+  $(cc) &^ -o $@
+  
+
